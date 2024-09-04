@@ -26,7 +26,7 @@ component "kube" {
 }
 
 component "unrelated-tfe-prov-example" {
-  source = "git::https://github.com/shernandez5/terraforming-stacks.git"
+  source = "git::https://github.com/mjyocca/terraforming-stacks.git"
 
   inputs = {
     tfe_organization  = var.tfe_organization
