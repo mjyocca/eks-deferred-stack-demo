@@ -16,11 +16,11 @@ store "varset" "tokens" {
 locals {
   kubernetes_version  = "1.30"
   default_tags        = { stacks-preview-example = "eks-deferred-stack-demo" }
-  tfe_organization    = "sarah-test-org"
-  tfe_project_name    = "AWS Testing"
-  github_username     = "shernandez5"
-  repo_name           = "shernandez5/pet-nulls-stack"
-  oauth_client_name   = "shernandez5"
+  tfe_organization    = "hashicorp"
+  tfe_project_name    = "Default Project"
+  github_username     = "mjyocca"
+  repo_name           = "mjyocca/local-tf-stack-pet-nulls"
+  oauth_client_name   = "Github.com (Stacks Local)"
 
   arn                 = "arn:aws:iam::225401527358:role/lambda-component-expansion-stack"
 }
