@@ -8,7 +8,7 @@ identity_token "aws" {
 
 # Source secrets from HCP Terraform variable set
 store "varset" "tokens" {
-  id       = "varset-CEtn4LmJr8TEhCAX"
+  id       = "varset-Uq2aGQdKgxk7cDRX"
   category = "terraform"
 }
 
