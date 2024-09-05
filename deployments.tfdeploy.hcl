@@ -22,7 +22,7 @@ locals {
   repo_name           = "mjyocca/local-tf-stack-pet-nulls"
   oauth_client_name   = "Github.com (Stacks Local)"
 
-  arn                 = "arn:aws:iam::225401527358:role/lambda-component-expansion-stack"
+  arn                 = "arn:aws:iam::112041562934:role/STACKS_OIDC_IDENTITY_ROLE"
 }
 
 deployment "development" {
