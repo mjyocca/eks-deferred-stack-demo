@@ -9,10 +9,10 @@ data "aws_availability_zones" "available" {
 }
 
 locals {
-  tagName = "hcp-terraform-eks-demo-node"
+  tagName    = "hcp-terraform-eks-demo-node"
   failing_az = "us-east-1e"
-  eks_azs = [for az in data.aws_availability_zones.available.names : az if az != "us-east-1e"]
-  azCount = length(local.eks_azs)
+  eks_azs    = [for az in data.aws_availability_zones.available.names : az if az != "us-east-1e"]
+  azCount    = length(local.eks_azs)
 }
 
 resource "aws_vpc" "demo" {
@@ -20,7 +20,7 @@ resource "aws_vpc" "demo" {
   enable_dns_support   = true
   enable_dns_hostnames = true
   tags = {
-    "Name"                                      = local.tagName
+    "Name"                                        = local.tagName
     "kubernetes.io/cluster/${local.cluster_name}" = "shared"
   }
 }
@@ -28,15 +28,15 @@ resource "aws_vpc" "demo" {
 resource "aws_subnet" "demo" {
   count = local.azCount
 
-  availability_zone       = data.aws_availability_zones.available.names[count.index]
+  availability_zone       = local.eks_azs[count.index]
   cidr_block              = "10.0.${count.index}.0/24"
   vpc_id                  = aws_vpc.demo.id
   map_public_ip_on_launch = true
 
   tags = {
-    "Name"                                      = local.tagName
+    "Name"                                        = local.tagName
     "kubernetes.io/cluster/${local.cluster_name}" = "shared"
-    "kubernetes.io/role/elb"                    = 1
+    "kubernetes.io/role/elb"                      = 1
   }
 }
 
@@ -67,4 +67,3 @@ resource "aws_route_table_association" "demo" {
   subnet_id      = aws_subnet.demo[count.index].id
   route_table_id = aws_route_table.demo.id
 }
-
