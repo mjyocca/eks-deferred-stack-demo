@@ -65,5 +65,3 @@ variable "repo_name" {
   type = string
   description = "The name of the repo to connect to the stack"
 }
-
-# hello world
