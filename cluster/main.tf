@@ -22,8 +22,10 @@ resource "random_string" "demo" {
 
 locals {
   cluster_name = "${var.cluster_name}-${random_string.demo.result}"
+  # subnets to filter out
+  exclude_subnets = ["us-east-1e"]
   # subnets to be used for eks cluster servers
-  cluster_subnets = [for subnet in data.aws_subnet.this : subnet.id if !contains(["us-east-1e"], subnet.availability_zone)]
+  cluster_subnets = [for subnet in data.aws_subnet.this : subnet.id if !contains(local.exclude_subnets, subnet.availability_zone)]
 }
 
 resource "aws_eks_cluster" "demo" {
