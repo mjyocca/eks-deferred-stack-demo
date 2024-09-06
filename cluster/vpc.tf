@@ -11,7 +11,7 @@ data "aws_availability_zones" "available" {
 locals {
   tagName    = "hcp-terraform-eks-demo-node"
   failing_az = "us-east-1e"
-  eks_azs    = [for az in data.aws_availability_zones.available.names : az if az != "us-east-1e"]
+  eks_azs    = [for az in data.aws_availability_zones.available.names : az if !contains(["us-east-1e"], az)]
   azCount    = length(local.eks_azs)
 }
 
