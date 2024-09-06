@@ -8,11 +8,21 @@ data "aws_availability_zones" "available" {
   state = "available"
 }
 
+data "aws_subnets" "this" {
+  filter {
+    name   = "vpc-id"
+    values = [aws_vpc.demo.id]
+  }
+}
+
+data "aws_subnet" "this" {
+  for_each = toset(data.aws_subnets.this.ids)
+  id       = each.value
+}
+
 locals {
   tagName    = "hcp-terraform-eks-demo-node"
-  failing_az = "us-east-1e"
-  eks_azs    = [for az in data.aws_availability_zones.available.names : az if !contains(["us-east-1e"], az)]
-  azCount    = length(local.eks_azs)
+  azCount = length(data.aws_availability_zones.available.names)
 }
 
 resource "aws_vpc" "demo" {
@@ -28,7 +38,7 @@ resource "aws_vpc" "demo" {
 resource "aws_subnet" "demo" {
   count = local.azCount
 
-  availability_zone       = local.eks_azs[count.index]
+  availability_zone       = data.aws_availability_zones.available.names[count.index]
   cidr_block              = "10.0.${count.index}.0/24"
   vpc_id                  = aws_vpc.demo.id
   map_public_ip_on_launch = true
