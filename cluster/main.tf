@@ -22,6 +22,7 @@ resource "random_string" "demo" {
 
 locals {
   cluster_name = "${var.cluster_name}-${random_string.demo.result}"
+  cluster_subnets = [for subnet in data.aws_subnet.this : subnet.id if !contains(["us-east-1e"], subnet.availability_zone)]
 }
 
 resource "aws_eks_cluster" "demo" {
@@ -30,7 +31,7 @@ resource "aws_eks_cluster" "demo" {
   role_arn = aws_iam_role.demo-cluster.arn
 
   vpc_config {
-    subnet_ids = aws_subnet.demo.*.id
+    subnet_ids = local.cluster_subnets # aws_subnet.demo.*.id
   }
 
   # Ensure that IAM Role permissions are created before and deleted after EKS Cluster handling.
