@@ -22,6 +22,7 @@ resource "random_string" "demo" {
 
 locals {
   cluster_name = "${var.cluster_name}-${random_string.demo.result}"
+  # subnets to be used for eks cluster servers
   cluster_subnets = [for subnet in data.aws_subnet.this : subnet.id if !contains(["us-east-1e"], subnet.availability_zone)]
 }
 
